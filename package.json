@@ -1,0 +1,14 @@
+{
+  "name": "simple-admin-app",
+  "version": "1.0.0",
+  "description": "simple-admin application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "simple-admin"
+  ],
+  "author": "wasya1212",
+  "license": "MIT"
+}
