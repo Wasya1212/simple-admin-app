@@ -10,5 +10,10 @@
     "simple-admin"
   ],
   "author": "wasya1212",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Wasya1212/simple-admin-app.git"
+  },
+  "private": "true",
   "license": "MIT"
 }
