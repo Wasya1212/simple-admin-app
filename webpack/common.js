@@ -1,25 +1,31 @@
-const fs = require('fs');
+// main modules
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-function findFiles(dir, regExp) {
-  let files = [];
-
-  return fs.readdir(dir, (err, readed_files) => {
-    if (err) throw err;
-    return readed_files.filter(file => regExp.test(file));
-  });
-}
-
-module.exports = dirname => {
-  let HTMLFiles = findFiles(path.resolve(__dirname, '../examples'), /\.m?js$/);
-
-  console.log(HTMLFiles);
-
-  return {
-    plugins: HTMLFiles.map(file => new HtmlWebpackPlugin({
-      inject: false,
-      template: path.resolve(dirname, `src/${file}`)
-    }))
-  };
+// main config
+module.exports = {
+  entry: {
+    'bundle': './src/index.js'
+  },
+  output: {
+    path: path.resolve(__dirname, '../dist'),
+    filename: '[name].js'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['env', 'es2017', 'es2015', 'stage-3'],
+            plugins: ['transform-runtime']
+          }
+        }
+      }
+    ]
+  },
+  optimization: {
+    minimize: false
+  }
 };

@@ -2,46 +2,33 @@
 const path = require('path');
 const Webpack = require('webpack');
 const BabelPresetMinify = require('babel-preset-minify');
+const merge = require('webpack-merge');
+const fs = require('fs');
 
 // plugins
 const MinifyPlugin = require('babel-minify-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const fsdir = require('./common');
+// find all files in directory
+function findFiles(dir, regExp) {
+  let files = fs.readdirSync(dir);
 
-console.log(fsdir().plugins);
+  return files.filter(file => regExp.test(file));
+}
+
+let HTMLFiles = findFiles(path.resolve(__dirname, '../examples/html'), /\.html$/);
+let HTMLPlugins = HTMLFiles.map(file => new HtmlWebpackPlugin({
+  inject: false,
+  template: path.resolve(__dirname, `../examples/html/${file}`),
+  filename: file
+}));
 
 // main config
-module.exports = dirname => ({
-  entry: {
-    'bundle': './src/index.js'
-  },
-  output: {
-    path: path.resolve(dirname, 'dist'),
-    filename: '[name].js'
-  },
-  module: {
-    rules: [
-      {
-        test: /\.m?js$/,
-        exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['env', 'es2017', 'es2015', 'stage-3'],
-            plugins: ['transform-runtime']
-          }
-        }
-      }
-    ]
-  },
-  optimization: {
-    minimize: false
-  },
+module.exports = merge(require('./common'), {
   plugins: [
     new HtmlWebpackPlugin({
       inject: false,
-      template: path.resolve(dirname, 'src/index.html')
+      template: path.resolve(__dirname, '../examples/html/index.html')
     }),
     new MinifyPlugin({
       removeConsole: false
@@ -51,9 +38,14 @@ module.exports = dirname => ({
       include: /\.min\.js$/,
     }),
     new Webpack.HotModuleReplacementPlugin()
-  ],
+  ].concat(HTMLPlugins),
   devServer: {
-    contentBase: path.join(dirname, './dist/'),
+    contentBase: [
+      path.join(__dirname, '../dist'),
+      path.join(__dirname, '../examples/html'),
+      path.join(__dirname, '../examples/js'),
+      path.join(__dirname, '../examples/css')
+    ],
     compress: false,
     port: 3000,
     index: 'index.html',
