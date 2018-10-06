@@ -1,4 +1,4 @@
-class AdminScheme {
+export default class AdminScheme {
   constructor(name, getBaseData = done => done([])) {
     this.name = name;
     this.field = Object.create(null);

@@ -1,5 +1,17 @@
-class AdminPanelController {
+import AdminPanelTypes from "./types";
+
+export default class AdminPanelController {
   constructor($_container) {
+    /*
+      checking for main container
+      of all admin panel elements
+    */
+    if (!$_container) {
+      throw new Error("Please select container for admin panel!");
+    } else if (!isNode($_container)) {
+      throw new Error("Please create container for admin panel at your document!");
+    }
+
     // parent element for all contoller DOM elements
     this.$_container = $_container;
 
@@ -14,11 +26,11 @@ class AdminPanelController {
     // create control input types
     this.types = new AdminPanelTypes();
 
-    let STRING_VIEW = data => {
+    let STRING_VIEW = () => {
       return document.createElement('input');
     }
 
-    this.types.declareType('String', STRING_VIEW(), {
+    this.types.declareType('String', STRING_VIEW, {
       getData: container => {
         let $_data_container = container.querySelector('input');
         let data = $_data_container.value;
@@ -30,16 +42,16 @@ class AdminPanelController {
         $_data_container.value = data;
       }
     });
-    this.types.declareType('Text', STRING_VIEW(), {
+    this.types.declareType('Text', STRING_VIEW, {
       getData: data_container => {
         alert(data_container);
       }
     });
-    this.types.declareType('Check', STRING_VIEW());
-    this.types.declareType('MultiCheck', STRING_VIEW());
-    this.types.declareType('File', STRING_VIEW());
-    this.types.declareType('MultiFile', STRING_VIEW());
-    this.types.declareType('Baseobj', STRING_VIEW());
+    this.types.declareType('Check', STRING_VIEW);
+    this.types.declareType('MultiCheck', STRING_VIEW);
+    this.types.declareType('File', STRING_VIEW);
+    this.types.declareType('MultiFile', STRING_VIEW);
+    this.types.declareType('Baseobj', STRING_VIEW);
 
     this.schemes = [];
     this.scheme = Object.create(null);
