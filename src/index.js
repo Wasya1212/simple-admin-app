@@ -5,7 +5,9 @@ import AdminPanelController from "./controller";
 import AdminPanelTypes from "./types";
 import AdminPanelSchema from "./schema";
 
-// types testing
+//************************************************************************
+// testing types
+//************************************************************************
 let shopTypes = new AdminPanelTypes();
 
 shopTypes.declareType('string', () => {
@@ -46,6 +48,13 @@ function initInputChangeHandler(inputType) {
     console.log(inputType.value);
   });
 }
+//************************************************************************
+
+//************************************************************************
+// testing schemas
+//************************************************************************
+
+//************************************************************************
 
 document.addEventListener('DOMContentLoaded', () => {
   //************************************************************************
